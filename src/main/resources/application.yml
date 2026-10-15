@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: stagepass-live
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:stagepass}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${MYSQL_USER:stagepass_app}
+    password: ${MYSQL_PASSWORD:stagepass_app_pwd}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: false
+
+  sql:
+    init:
+      mode: never
+
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER:stagepass_app}:${MONGO_PASSWORD:stagepass_app_pwd}@${MONGO_HOST:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:stagepass}?authSource=${MONGO_AUTH_DB:stagepass}
+
+stagepass:
+  hmac:
+    master-secret: ${STAGEPASS_HMAC_MASTER_SECRET:change-this-master-secret-in-production}
+  admin:
+    api-key: ${STAGEPASS_ADMIN_API_KEY:change-this-admin-key}
+  reglas:
+    bloqueo-minutos: ${STAGEPASS_BLOQUEO_MINUTOS:10}
+    max-boletos-por-evento: ${STAGEPASS_MAX_BOLETOS_POR_EVENTO:6}
+  expiracion:
+    scheduler-fijo-ms: 60000
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    com.stagepass: INFO
